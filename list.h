@@ -1,10 +1,11 @@
 // =================================================================
 //
 // File: list.h
-// Author:
-// Date:
+// Author: Arturo Díaz - A01709522
+// Date: 28/09/22
 // 
 // =================================================================
+
 #ifndef LIST_H
 #define LIST_H
 
@@ -18,6 +19,7 @@ template <class T> class List;
 // =================================================================
 // Definition of the Node class
 // =================================================================
+
 template <class T>
 class Node {
 private:
@@ -36,6 +38,7 @@ private:
 //
 // @param val, stored value in the node.
 // =================================================================
+
 template <class T>
 Node<T>::Node(T val) : value(val), next(NULL) {
 }
@@ -46,6 +49,7 @@ Node<T>::Node(T val) : value(val), next(NULL) {
 // @param val, stored value in the node.
 // @param nxt, the next node.
 // =================================================================
+
 template <class T>
 Node<T>::Node(T val, Node* nxt) : value(val), next(nxt) {
 }
@@ -53,6 +57,7 @@ Node<T>::Node(T val, Node* nxt) : value(val), next(nxt) {
 // =================================================================
 // Definition of the List class
 // =================================================================
+
 template <class T>
 class List {
 private:
@@ -63,7 +68,7 @@ public:
 	List();
 	~List();
 
-	uint  length() const;
+	uint length() const;
 	bool empty() const;
 	bool contains(T) const;
 	void clear();
@@ -87,6 +92,7 @@ public:
 // =================================================================
 // Constructor. Initializes both instance variables to zero.
 // =================================================================
+
 template <class T>
 List<T>::List() :head(NULL), size(0) {
 }
@@ -94,6 +100,7 @@ List<T>::List() :head(NULL), size(0) {
 // =================================================================
 // Destructor. Remove all items from the list.
 // =================================================================
+
 template <class T>
 List<T>::~List() {
 	clear();
@@ -104,6 +111,7 @@ List<T>::~List() {
 //
 // @returns true if the list is empty, false otherwise.
 // =================================================================
+
 template <class T>
 bool List<T>::empty() const {
 	return (head == NULL);
@@ -114,6 +122,7 @@ bool List<T>::empty() const {
 //
 // @returns size, the number of items in the list.
 // =================================================================
+
 template <class T>
 uint List<T>::length() const {
 	return size;
@@ -124,6 +133,7 @@ uint List<T>::length() const {
 //
 // @returns true if val is in the list, false otherwise
 // =================================================================
+
 template <class T>
 bool List<T>::contains(T val) const {
 	Node<T> *p;
@@ -141,6 +151,7 @@ bool List<T>::contains(T val) const {
 // =================================================================
 // Remove all items from the list.
 // =================================================================
+
 template <class T>
 void List<T>::clear() {
 	Node<T> *p, *q;
@@ -161,6 +172,7 @@ void List<T>::clear() {
 //
 // @returns a string containing all the elements of the list.
 // =================================================================
+
 template <class T>
 std::string List<T>::toString() const {
 	std::stringstream aux;
@@ -185,6 +197,7 @@ std::string List<T>::toString() const {
 // @returns the object T at the beginning of the list.
 // @throws NoSuchElement, if the list is empty.
 // =================================================================
+
 template <class T>
 T List<T>::front() const {
 	if (empty()) {
@@ -200,6 +213,7 @@ T List<T>::front() const {
 // @returns the object T at the end of the list.
 // @throws NoSuchElement, if the list is empty.
 // =================================================================
+
 template <class T>
 T List<T>::last() const {
 	Node<T> *p;
@@ -220,12 +234,24 @@ T List<T>::last() const {
 //
 // @returns the element in index
 // @throws IndexOutOfBounds, if index >= size.
+// Complejidad: O(n)
 // =================================================================
+
 template <class T>
 T List<T>::get(uint index) const {
 	T aux;
+  Node <T> *p;
+  p = head;
 
-	// TO DO
+  if (index >= this->size){
+    throw IndexOutOfBounds();
+  }
+
+  for (int i = 0; i < index; i++){
+    p = p->next;
+  }
+
+  aux = p->value;
 	return aux;
 }
 
@@ -233,6 +259,7 @@ T List<T>::get(uint index) const {
 // Add an item to the beginning of the list. Increase the size of
 // the list.
 // =================================================================
+
 template <class T>
 void List<T>::push_front(T val) {
 	Node<T> *q;
@@ -247,6 +274,7 @@ void List<T>::push_front(T val) {
 // Add an item to the end of the list. Increase the size of
 // the list.
 // =================================================================
+
 template <class T>
 void List<T>::push_back(T val) {
 	Node<T> *p, *q;
@@ -272,10 +300,42 @@ void List<T>::push_back(T val) {
 // was in that position is shifted to the right.
 //
 // @throws IndexOutOfBounds, if index > size.
+// Complejidad: O(n)
 // =================================================================
+
 template <class T>
 void List<T>::insert_at(T val, uint index) {
-	// TO DO
+	int aux = index - 1;
+  Node<T> *p, *q;
+
+  if (empty()){
+    push_front(val);
+    return;
+  }
+
+  if (index > this->size){
+    throw IndexOutOfBounds();
+  }
+
+  p = head;
+  if (index == 0){
+    q = new Node<T>(val);
+    head = q;
+    q->next = p;
+  }
+
+  else{
+    
+    for (int i = 0; i < (aux); i++){
+      p = p->next;
+    }
+
+    q = new Node<T>(val);
+    q->next = p->next;
+    p->next = q;
+  }
+
+  size++;
 }
 
 // =================================================================
@@ -284,6 +344,7 @@ void List<T>::insert_at(T val, uint index) {
 // @returns the element that was at the beginning of the list.
 // @throws NoSuchElement if the list is empty
 // =================================================================
+
 template <class T>
 T List<T>::pop_front() {
 	T val;
@@ -309,6 +370,7 @@ T List<T>::pop_front() {
 // @returns the element that was at the end of the list.
 // @throws NoSuchElement if the list is empty
 // =================================================================
+
 template <class T>
 T List<T>::pop_back() {
 	Node<T> *p, *q;
@@ -343,12 +405,34 @@ T List<T>::pop_back() {
 //
 // @returns the element that was in index.
 // @throws IndexOutOfBounds, if index >= size.
+// Complejidad: O(n)
 // =================================================================
+
 template <class T>
 T List<T>::remove_at(uint index) {
-	T aux;
-	// TO DO
-	return aux;
+	T aux = index - 1;
+  Node <T> *p, *q;
+
+  if (index >+ this->size){
+    throw IndexOutOfBounds();
+  }
+
+  p = head;
+  if (index == 0){
+    head = head ->next;
+    size --;
+    return p->value;
+  }
+
+  for (int i = 0; i < (aux); i++){
+    p = p->next;
+  }
+
+  q = p->next;
+  p->next = q ->next;
+  size--;
+
+  return q->value;
 }
 
 // =================================================================
@@ -356,10 +440,19 @@ T List<T>::remove_at(uint index) {
 //
 // @returns the position of an item in the list, -1 otherwise.
 // @throws IndexOutOfBounds, if index >= size.
+// Complejidad O(n)
 // =================================================================
+
 template <class T>
 long int List<T>::indexOf(T val) const {
-	// TO DO
+	Node<T> *p;
+  p = head;
+  for (long int i = 0; i < size; i++){
+    if (p->value == val){
+      return i;
+    }
+    p = p->next;
+  }
 	return -1;
 }
 
